@@ -1,0 +1,12 @@
+{
+  "target": {
+    "preciseSelector": [
+      {
+        "automationId": "workbench.parts.editor",
+        "name": "",
+        "className": "",
+        "controlType": 50026
+      }
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "target": {
+    "preciseSelector": [
+      {
+        "automationId": "",
+        "name": "project - Visual Studio Code",
+        "className": "Chrome_WidgetWin_1",
+        "controlType": 50033
+      }
+    ]
+  }
+}

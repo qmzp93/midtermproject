@@ -1,3 +1,4 @@
 hostDes: host.json
 eleDes:
-  - Filecontext.json
+  - XandHeight.json
+  - Yinfo.json

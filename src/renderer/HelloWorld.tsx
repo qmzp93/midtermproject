@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { HomContext } from './context/HomContext';
 import { ToolBar } from './components/toolbar/ToolBar';
-import { FileBox } from './FileBox';
+import { LineBox } from './LineBox';
 
 export const HelloWorld = () => {
   const { venomInstance, setSubscribedHost, subscribedHostInstance } =
@@ -29,7 +29,7 @@ export const HelloWorld = () => {
 
   return (
     <>
-      <FileBox />
+      <LineBox />
       <ToolBar>
         <ToolBar.ActionButton
           label="Start"

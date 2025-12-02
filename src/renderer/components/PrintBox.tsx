@@ -1,11 +1,11 @@
-// renderer/components/FileInfoBox.tsx
-import type { BoundingInfo } from '../FileBox';
+// renderer/components/printBox.tsx
+import type { BoundingInfo } from '../LineBox';
 
-type FileInfoBoxProps = {
+type PrintBoxProps = {
   boundingInfo: BoundingInfo;
 };
 
-export const FileInfoBox = ({ boundingInfo }: FileInfoBoxProps) => {
+export const PrintBox = ({ boundingInfo }: PrintBoxProps) => {
   return (
     <>
       <div
@@ -33,4 +33,4 @@ export const FileInfoBox = ({ boundingInfo }: FileInfoBoxProps) => {
   );
 };
 
-export default FileInfoBox;
+export default PrintBox;

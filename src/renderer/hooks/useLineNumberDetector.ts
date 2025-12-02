@@ -99,11 +99,8 @@ export const useLineNumberDetector = ({
     // 當 boxKey 改變 (位置變了) 或 enabled 改變時，重新執行
   }, [enabled, boxKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // 4. 回傳 Hooks 格式的資料
-  // 過濾信心度 (這裡做或是移到 Hook 裡做都可以)
-  const validResults = results.filter((r) => r.confidence > 0.6);
 
-  return { results: validResults, status };
+  return { results: results, status };
 };
 
 export default useLineNumberDetector;

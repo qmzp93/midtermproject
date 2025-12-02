@@ -99,7 +99,7 @@ export const useCaptureStatus = (captureId: string, enabled = true) => {
       return response.data;
     },
     enabled,
-    refetchInterval: 1000,
+    refetchInterval: 3000,
   });
 };
 
@@ -116,8 +116,6 @@ export const useLineNumberResults = (captureId: string | null) => {
     // 只有當 captureId 存在時才開始查詢
     enabled: !!captureId,
     // 【關鍵】每 500ms 自動重新抓取一次 (Polling)
-    refetchInterval: 5000,
-    // 讓資料保持最新，不快取太久
-    staleTime: 0,
+    refetchInterval: 3000,
   });
 };

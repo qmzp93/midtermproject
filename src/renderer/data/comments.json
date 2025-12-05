@@ -1,0 +1,23 @@
+[
+  {
+    "id": "c1",
+    "content": "輸出紅色框框邏輯",
+    "file_path": "HelloWorld.tsx",
+    "line_number": 132,
+    "type": "Info"
+  },
+  {
+    "id": "c2",
+    "content": "這裡可能會有記憶體洩漏，請檢查",
+    "file_path": "HelloWorld.tsx",
+    "line_number": 135,
+    "type": "Bug"
+  },
+  {
+    "id": "c3",
+    "content": "已通過 Code Review",
+    "file_path": "HelloWorld.tsx",
+    "line_number": 140,
+    "type": "Todo"
+  }
+]

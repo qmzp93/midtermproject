@@ -40,7 +40,7 @@ export const LineNumberOverlay: React.FC<Props> = ({ targetBoundingBox }) => {
       {results.map((line: LineNumberResult, index: number) => {
         // --- 【核心邏輯：座標定位】 ---
         // 螢幕絕對 X = 行號區起始 X + API 回傳的相對 x
-        const absX = targetBoundingBox.x + line.x;
+        const absX = targetBoundingBox.x + line.x - 30;
         // 螢幕絕對 Y = 行號區起始 Y + API 回傳的相對 y
         const absY = targetBoundingBox.y + line.y;
 
@@ -55,12 +55,7 @@ export const LineNumberOverlay: React.FC<Props> = ({ targetBoundingBox }) => {
               width: line.width,
               height: line.height,
 
-              // 樣式：綠色框框
-              border: '1px solid #00ff00',
-              // 樣式：半透明綠底 (方便除錯看對位準不準)
-              backgroundColor: 'rgba(0, 255, 0, 0.2)',
-
-              pointerEvents: 'none', // 讓滑鼠穿透
+              pointerEvents: 'none',
               zIndex: 1000,
             }}
           >

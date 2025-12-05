@@ -8,7 +8,9 @@ import { HomContext } from './context/HomContext';
 import XandHeightDescriptor from '../../descriptor/XandHeight.json';
 import YinfoDescriptor from '../../descriptor/Yinfo.json';
 import { PrintBox } from './components/PrintBox';
-import { LineNumberOverlay } from './components/LineNumberOverlay';
+
+import { useLineNumberDetector } from './hooks/useLineNumberDetector';
+import { CommentOverlay } from './components/CommentOverlay';
 
 export type BoundingInfo = {
   id: string;
@@ -32,15 +34,15 @@ const getMergedBoundingInfo = (
   }
   const { x, height } = xElement.boundingBox;
 
-  const width = 40;
+  const width = 50;
   const y = yElement.boundingBox.bottom;
 
   return {
     id: `${xElement.id}-${yElement.id}`,
-    x: x + 20,
+    x: x + 15,
     y,
     width,
-    height: height - 70,
+    height: height - 80,
   };
 };
 
@@ -61,6 +63,13 @@ export const LineBox = () => {
 
   // 計算屬性：將兩個 Instance 的資料合併
   const mergedBoundingInfo = getMergedBoundingInfo(xhInstance, yInstance);
+
+  // 2. 【新增】在這裡直接呼叫 Hook 取得 API 資料
+  // 我們把 mergedBoundingInfo 傳給 Hook，讓它去截圖辨識
+  const { results: detectedLines } = useLineNumberDetector({
+    boundingBox: mergedBoundingInfo || undefined, // 如果是 null 轉 undefined
+    enabled: !!mergedBoundingInfo,
+  });
 
   // init File
   useEffect(() => {
@@ -150,7 +159,10 @@ export const LineBox = () => {
 
       {/* 3. 【新增】將座標傳給 LineNumberDetector 進行辨識與繪製 */}
       {mergedBoundingInfo && (
-        <LineNumberOverlay targetBoundingBox={mergedBoundingInfo} />
+        <CommentOverlay
+          detectedLines={detectedLines}
+          targetBoundingBox={mergedBoundingInfo}
+        />
       )}
     </>
   );

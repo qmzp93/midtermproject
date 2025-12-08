@@ -8,7 +8,7 @@ import { HomContext } from '../context/HomContext';
 import type { LineNumberResult } from '../hooks/useLineNumberDetector';
 import type { BoundingInfo } from '../LineBox';
 import type { CommentData } from './CreateCommentModal'; // 引入型別
-import filePathDescriptor from '../../../descriptor/filePath.json';
+import filePathDescriptor from '../../../descriptor/Yinfo.json';
 
 interface Props {
   detectedLines: LineNumberResult[];
@@ -56,9 +56,11 @@ export const CommentOverlay: React.FC<Props> = ({
         UITreeScope.Subtree,
       );
       setFilePathContainer(filePath);
+      // console.log('Container', filePath);
       const filePathElement = filePath?.item(0);
       setfilePathInstance(filePathElement);
-      console.log('test', filePathElement);
+      // eslint-disable-next-line no-console
+      console.log('Instance', filePathElement);
     };
     if (subscribedHostInstance && !filePathInstance) {
       initializeFile();

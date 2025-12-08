@@ -11,6 +11,9 @@
 import { app, shell, screen, ipcMain } from 'electron';
 import { MainProcess } from './MainProcess';
 import { MAINWINDOW_MESSAGES } from '../shared/ipcMessages';
+// 【新增】匯入 fs 和 path 模組
+import * as fs from 'fs';
+import * as path from 'path';
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -62,6 +65,33 @@ app
       mainProcess.getMainWindow()?.webContents.send('close');
       mainProcess.getMainWindow()?.close();
       app.quit();
+    });
+    // 【新增】監聽 'save-comments' 事件並寫入檔案
+    ipcMain.on('save-comments', (event, data) => {
+      console.log('[Main] 收到儲存註解請求，資料長度:', data.length);
+
+      try {
+        // 1. 定義檔案路徑
+        // 注意：在開發模式下，這會指向您的 src 資料夾
+        // 在打包後的 Production 模式，通常不能寫入 src，建議改用 app.getPath('userData')
+        const dataPath =
+          process.env.NODE_ENV === 'development'
+            ? path.join(__dirname, '../../src/renderer/data/comments.json')
+            : path.join(app.getPath('userData'), 'comments.json');
+
+        // 2. 確保資料夾存在 (如果是開發模式)
+        const dir = path.dirname(dataPath);
+        if (!fs.existsSync(dir)) {
+          fs.mkdirSync(dir, { recursive: true });
+        }
+
+        // 3. 寫入 JSON 檔案
+        fs.writeFileSync(dataPath, JSON.stringify(data, null, 2), 'utf-8');
+
+        console.log('[Main] 註解已成功寫入:', dataPath);
+      } catch (err) {
+        console.error('[Main] 寫入註解失敗:', err);
+      }
     });
   })
   .catch(console.log);

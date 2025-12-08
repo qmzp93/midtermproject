@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   SubscribedHomElements,
   HomElement,
@@ -11,6 +11,12 @@ import { PrintBox } from './components/PrintBox';
 
 import { useLineNumberDetector } from './hooks/useLineNumberDetector';
 import { CommentOverlay } from './components/CommentOverlay';
+import type { CommentData } from './components/CreateCommentModal';
+
+// 1. 定義 LineBox 的 Props
+interface LineBoxProps {
+  comments?: CommentData[]; // 新增這個屬性
+}
 
 export type BoundingInfo = {
   id: string;
@@ -46,7 +52,7 @@ const getMergedBoundingInfo = (
   };
 };
 
-export const LineBox = () => {
+export const LineBox: React.FC<LineBoxProps> = ({ comments }) => {
   const { subscribedHostInstance } = useContext(HomContext);
 
   const [xhContainer, setXhContainer] = useState<
@@ -162,6 +168,7 @@ export const LineBox = () => {
         <CommentOverlay
           detectedLines={detectedLines}
           targetBoundingBox={mergedBoundingInfo}
+          externalComments={comments} // 傳入從上層來的資料
         />
       )}
     </>

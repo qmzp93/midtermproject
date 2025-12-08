@@ -28,10 +28,16 @@ const event = {
   OpenDevtools: (): void => ipcRenderer.send('open-devtools'),
 };
 
+// 【新增】這個函式負責發送資料給 Main Process
+const saveComments = (data: any[]): void => {
+  ipcRenderer.send('save-comments', data);
+};
+
 export const API = {
   ipc,
   event,
   button,
+  saveComments, // 【新增】匯出這個函式
 };
 
 export type APIType = typeof API;

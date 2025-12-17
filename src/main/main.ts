@@ -59,6 +59,16 @@ app
       console.log('[Open External Link] catched by ipcMain');
       shell.openExternal(url);
     });
+    
+    ipcMain.on(MAINWINDOW_MESSAGES.SHOW_WINDOW, () => {
+      console.log('[Show Window] catched by ipcMain');
+      mainProcess.showAllWindows();
+    });
+
+    ipcMain.on(MAINWINDOW_MESSAGES.HIDE_WINDOW, () => {
+      console.log('[Hide Window] catched by ipcMain');
+      mainProcess.hideAllWindows();
+    });
 
     ipcMain.on('close-window', async () => {
       console.log('[Close window] catched by ipcMain');

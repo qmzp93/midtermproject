@@ -2,36 +2,36 @@
   {
     "id": "c1",
     "content": "輸出紅色框框邏輯",
-    "file_path": "HelloWorld.tsx",
+    "fileName": "HelloWorld.tsx",
     "line_number": 12,
     "type": "Info"
   },
   {
     "id": "c2",
     "content": "這裡可能會有記憶體洩漏，請檢查",
-    "file_path": "HelloWorld.tsx",
+    "fileName": "HelloWorld.tsx",
     "line_number": 15,
     "type": "Bug"
   },
   {
     "id": "c3",
     "content": "已通過 Code Review",
-    "file_path": "HelloWorld.tsx",
+    "fileName": "HelloWorld.tsx",
     "line_number": 17,
     "type": "Todo"
   },
   {
     "id": "c4",
     "content": "這是 LineBox 的設定檔",
-    "file_path": "LineBox.tsx",
+    "fileName": "LineBox.tsx",
     "line_number": 10,
     "type": "Info"
   },
   {
     "id": "c5",
     "content": "請確認座標是否正確",
-    "file_path": "LineBox.tsx",
-    "line_number": 50,
+    "fileName": "LineBox.tsx",
+    "line_number": 15,
     "type": "Todo"
   }
 ]

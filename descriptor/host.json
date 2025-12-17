@@ -3,9 +3,9 @@
     "preciseSelector": [
       {
         "automationId": "",
-        "name": "project - Visual Studio Code",
+        "name": "Visual Studio Code",
         "className": "Chrome_WidgetWin_1",
-        "controlType": 50033
+        "controlType": 50032
       }
     ]
   }

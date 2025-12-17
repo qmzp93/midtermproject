@@ -31,6 +31,7 @@ export const HelloWorld = () => {
 
   // 5. 【新增】處理儲存註解的邏輯
   const handleSaveComment = async (newComment: CommentData) => {
+    // eslint-disable-next-line no-console
     console.log('新增註解:', newComment);
 
     // A. 更新 React 畫面 (即時顯示)
@@ -41,6 +42,7 @@ export const HelloWorld = () => {
     if (window.api && window.api.saveComments) {
       window.api.saveComments(updatedComments);
     } else {
+      // eslint-disable-next-line no-console
       console.warn(
         '未偵測到 saveComments API，註解僅暫存於記憶體中，重整後會消失。',
       );

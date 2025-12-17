@@ -4,6 +4,8 @@ export const MAINWINDOW_MESSAGES = {
   ENTER_BUTTON: 'enter-button',
   LEAVE_BUTTON: 'leave-button',
   OPEN_EXTERNAL_LINK: 'open-external-link',
+  SHOW_WINDOW: 'show-window',
+  HIDE_WINDOW: 'hide-window',
 };
 
 export default MAINWINDOW_MESSAGES;

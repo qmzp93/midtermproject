@@ -145,6 +145,28 @@ export class MainProcess {
     return childWindowId;
   }
 
+  public showAllWindows(): void {
+    // eslint-disable-next-line no-console
+    console.log('[Show all windows] catched by ipcMain');
+    this.mainWindow?.show();
+    this.childWindows.forEach((childWindow) => {
+      if (!childWindow.isDestroyed()) {
+        childWindow.show();
+      }
+    });
+  }
+
+  public hideAllWindows(): void {
+    // eslint-disable-next-line no-console
+    console.log('[Hide all windows] catched by ipcMain');
+    this.mainWindow?.hide();
+    this.childWindows.forEach((childWindow) => {
+      if (!childWindow.isDestroyed()) {
+        childWindow.hide();
+      }
+    });
+  }
+
   public closeChildWindow(id: string): void {
     // eslint-disable-next-line no-console
     console.log(`[Close childWindow ${id}] catched by ipcMain`);

@@ -1,12 +1,13 @@
 // src/renderer/components/CreateCommentModal.tsx
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { HomContext } from '../context/HomContext';
 import InteractiveElement from './InteractiveElement';
 
 // 定義註解的格式
 export interface CommentData {
   id: string;
   content: string;
-  file_path: string;
+  fileName: string | null;
   line_number: number;
   type: 'Info' | 'Bug' | 'Todo';
 }
@@ -26,6 +27,7 @@ export const CreateCommentModal: React.FC<Props> = ({
   const [content, setContent] = useState('');
   const [lineNumber, setLineNumber] = useState(1);
   const [type, setType] = useState<'Info' | 'Bug' | 'Todo'>('Info');
+  const { currentFileName } = useContext(HomContext);
 
   if (!isOpen) return null;
 
@@ -36,7 +38,7 @@ export const CreateCommentModal: React.FC<Props> = ({
     const newComment: CommentData = {
       id: `c${Date.now()}`, // 使用時間戳當作唯一 ID
       content,
-      file_path: 'HelloWorld.tsx', // 目前先固定，未來可改成動態
+      fileName: currentFileName, // 目前先固定，未來可改成動態
       line_number: Number(lineNumber),
       type,
     };

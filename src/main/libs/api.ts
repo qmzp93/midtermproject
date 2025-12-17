@@ -25,6 +25,8 @@ const event = {
     return hwnd;
   },
   CloseWindow: (): void => ipcRenderer.send('close-window'),
+  ShowWindow: (): void => ipcRenderer.send(MAINWINDOW_MESSAGES.SHOW_WINDOW),
+  HideWindow: (): void => ipcRenderer.send(MAINWINDOW_MESSAGES.HIDE_WINDOW),
   OpenDevtools: (): void => ipcRenderer.send('open-devtools'),
 };
 

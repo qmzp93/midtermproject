@@ -1,20 +1,13 @@
-import React, { useState, useContext, useEffect } from 'react';
-import {
-  SubscribedHomElements,
-  HomElement,
-  UITreeScope,
-} from '@ar-project/host-object-model';
+import React, { useState, useContext } from 'react';
 import { HomContext } from '../context/HomContext';
 import type { LineNumberResult } from '../hooks/useLineNumberDetector';
 import type { BoundingInfo } from '../LineBox';
 import type { CommentData } from './CreateCommentModal'; // 引入型別
-import filePathDescriptor from '../../../descriptor/Yinfo.json';
 
 interface Props {
   detectedLines: LineNumberResult[];
   targetBoundingBox: BoundingInfo;
-  currentFileName?: string;
-  externalComments?: CommentData[]; // 新增：接收外部傳入的註解列表
+  externalComments: CommentData[]; // 新增：接收外部傳入的註解列表
 }
 
 // 圖示對照 Helper
@@ -34,42 +27,18 @@ const getIcon = (type: string) => {
 export const CommentOverlay: React.FC<Props> = ({
   detectedLines,
   targetBoundingBox,
-  currentFileName = 'HelloWorld.tsx', // 這將作為 "預設值"
-  externalComments = [], // 預設為空陣列
+  externalComments, // 預設為空陣列
 }) => {
   // 用來記錄目前滑鼠懸停在哪個註解上 (存註解的 ID)
   const [hoveredCommentId, setHoveredCommentId] = useState<string | null>(null);
 
-  const { subscribedHostInstance } = useContext(HomContext);
-  const [filePathContainer, setFilePathContainer] = useState<
-    SubscribedHomElements | undefined
-  >(undefined);
-  const [filePathInstance, setfilePathInstance] = useState<
-    HomElement | undefined
-  >(undefined);
-
-  // init File
-  useEffect(() => {
-    const initializeFile = async () => {
-      const filePath = await subscribedHostInstance?.getElementsByDescriptor(
-        filePathDescriptor,
-        UITreeScope.Subtree,
-      );
-      setFilePathContainer(filePath);
-      // console.log('Container', filePath);
-      const filePathElement = filePath?.item(0);
-      setfilePathInstance(filePathElement);
-      // eslint-disable-next-line no-console
-      console.log('Instance', filePathElement);
-    };
-    if (subscribedHostInstance && !filePathInstance) {
-      initializeFile();
-    }
-  }, [subscribedHostInstance, filePathInstance]);
+  // 1. 從 Context 取得 activeFileElement
+  const { currentFileName } = useContext(HomContext);
 
   // 篩選出屬於這個檔案的註解
+  // console.log('CommentOverlay:', currentFileName);
   const fileComments = externalComments.filter(
-    (c) => c.file_path === currentFileName,
+    (c) => c.fileName === currentFileName,
   );
 
   if (fileComments.length === 0) return null;

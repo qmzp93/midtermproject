@@ -6,14 +6,18 @@ import {
   CreateCommentModal,
   CommentData,
 } from './components/CreateCommentModal';
+import { QueryCommentModal } from './components/QueryCommentModal';
 import initialComments from './data/comments.json';
 
 export const HelloWorld = () => {
   const { venomInstance, setSubscribedHost, subscribedHostInstance } =
     useContext(HomContext);
 
-  // 管理 Modal 開關的 State
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // 管理 Create Modal 開關
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  // 【新增】管理 Query Modal 開關
+  const [isQueryModalOpen, setIsQueryModalOpen] = useState(false);
+
   //  管理所有註解的 State (初始值來自 json 檔案)
   const [comments, setComments] = useState<CommentData[]>(
     initialComments as CommentData[],
@@ -29,7 +33,7 @@ export const HelloWorld = () => {
     initializeSubscribedHost();
   }, [venomInstance, subscribedHostInstance, setSubscribedHost]);
 
-  // 5. 【新增】處理儲存註解的邏輯
+  // 處理儲存註解的邏輯
   const handleSaveComment = async (newComment: CommentData) => {
     // eslint-disable-next-line no-console
     console.log('新增註解:', newComment);
@@ -51,29 +55,33 @@ export const HelloWorld = () => {
 
   return (
     <>
-      {/* 6. 將最新的 comments 傳遞給 LineBox */}
+      {/* AR 顯示層 (包含 LineBox 和 CommentOverlay) */}
       <LineBox comments={comments} />
 
       {/* 7. 放入 Modal 元件 */}
       <CreateCommentModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
         onSave={handleSaveComment}
+      />
+      {/* 【新增】查詢註解 Modal */}
+      <QueryCommentModal
+        isOpen={isQueryModalOpen}
+        onClose={() => setIsQueryModalOpen(false)}
+        comments={comments} // 將目前的註解資料傳進去
       />
 
       <ToolBar>
         <ToolBar.ActionButton
           label="Create"
           onClick={async () => {
-            // eslint-disable-next-line no-console
-            setIsModalOpen(true); // 打開 Modal
+            setIsCreateModalOpen(true); // 打開 Modal
           }}
         />
         <ToolBar.ActionButton
-          label="Stop"
+          label="Query"
           onClick={async () => {
-            // eslint-disable-next-line no-console
-            console.log('Stop button clicked');
+            setIsQueryModalOpen(true);
           }}
         />
         <ToolBar.ActionButton

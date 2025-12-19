@@ -1,7 +1,8 @@
 // src/renderer/components/CreateCommentModal.tsx
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { HomContext } from '../context/HomContext';
 import InteractiveElement from './InteractiveElement';
+import './CreateCommentModal.css';
 
 // 定義註解的格式
 export interface CommentData {
@@ -23,11 +24,23 @@ export const CreateCommentModal: React.FC<Props> = ({
   onClose,
   onSave,
 }) => {
+  const { currentFileName } = useContext(HomContext);
+
   // 表單狀態
   const [content, setContent] = useState('');
   const [lineNumber, setLineNumber] = useState(1);
   const [type, setType] = useState<'Info' | 'Bug' | 'Todo'>('Info');
-  const { currentFileName } = useContext(HomContext);
+
+  // 【新增】檔案名稱的 State
+  const [fileName, setFileName] = useState('');
+
+  // 當 Modal 開啟時，自動帶入當前的檔案名稱
+  useEffect(() => {
+    if (isOpen) {
+      setFileName(currentFileName || '');
+      // 如果需要，也可以在這裡重置其他欄位
+    }
+  }, [isOpen, currentFileName]);
 
   if (!isOpen) return null;
 
@@ -38,7 +51,7 @@ export const CreateCommentModal: React.FC<Props> = ({
     const newComment: CommentData = {
       id: `c${Date.now()}`, // 使用時間戳當作唯一 ID
       content,
-      fileName: currentFileName, // 目前先固定，未來可改成動態
+      fileName,
       line_number: Number(lineNumber),
       type,
     };
@@ -53,154 +66,80 @@ export const CreateCommentModal: React.FC<Props> = ({
 
   return (
     <InteractiveElement>
-      <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.7)',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 9999,
-          // 【關鍵修正】: 啟用滑鼠事件，防止點擊穿透到底下的 VSCode
-          pointerEvents: 'auto',
-        }}
-      >
-        <div
-          style={{
-            backgroundColor: '#2d2d2d',
-            padding: '20px',
-            borderRadius: '8px',
-            width: '300px',
-            color: 'white',
-            border: '1px solid #444',
-            boxShadow: '0 4px 15px rgba(0,0,0,0.5)',
-          }}
-        >
-          <h3 style={{ marginTop: 0, color: '#61dafb' }}>新增註解</h3>
+      <div className="modal-overlay">
+        <div className="modal-content">
+          <h3 className="modal-header">新增 AR 註解</h3>
 
-          <form
-            onSubmit={handleSubmit}
-            style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}
-          >
-            {/* 註解類型 */}
-            <label
-              style={{
-                display: 'block',
-                marginBottom: '5px',
-                fontSize: '12px',
-              }}
-            >
-              類型
-              <select
-                value={type}
-                onChange={(e) => setType(e.target.value as any)}
-                style={{
-                  width: '100%',
-                  padding: '5px',
-                  borderRadius: '4px',
-                  backgroundColor: '#444',
-                  color: 'white',
-                  border: 'none',
-                  marginTop: '5px',
-                }}
-              >
-                <option value="Info">Info (ℹ️)</option>
-                <option value="Bug">Bug (🐞)</option>
-                <option value="Todo">Todo (✅)</option>
-              </select>
-            </label>
+          <form onSubmit={handleSubmit}>
+            {/* 類型選擇 */}
+            <div style={{ marginBottom: '16px' }}>
+              {/* 【修正】將 div 改為 label，讓它包覆整個輸入區域 */}
+              <label className="form-group" htmlFor="comment-type">
+                {/* 【修正】內層原本的 label 改為 span，避免 label 包 label */}
+                <span className="form-label">註解類型</span>
+                <select
+                  id="comment-type"
+                  value={type}
+                  onChange={(e) => setType(e.target.value as any)}
+                  className="form-select"
+                >
+                  <option value="Info">ℹ️ Info (資訊)</option>
+                  <option value="Bug">🐞 Bug (錯誤)</option>
+                  <option value="Todo">✅ Todo (待辦)</option>
+                </select>
+              </label>
+            </div>
 
-            {/* 行號 */}
-            <label
-              style={{
-                display: 'block',
-                marginBottom: '5px',
-                fontSize: '12px',
-              }}
-            >
-              行號
-              <input
-                type="number"
-                value={lineNumber}
-                onChange={(e) => setLineNumber(Number(e.target.value))}
-                style={{
-                  width: '100%',
-                  padding: '5px',
-                  borderRadius: '4px',
-                  backgroundColor: '#444',
-                  color: 'white',
-                  border: 'none',
-                  marginTop: '5px',
-                }}
-              />
-            </label>
+            {/* 檔案名稱 + 行號 */}
+            <div className="form-row">
+              {/* 【修正】將 div 改為 label */}
+              <label className="form-group flex-2" htmlFor="file-name">
+                <span className="form-label">檔案名稱</span>
+                <input
+                  id="file-name"
+                  type="text"
+                  value={fileName}
+                  onChange={(e) => setFileName(e.target.value)}
+                  placeholder="例如: App.tsx"
+                  className="form-input"
+                />
+              </label>
 
-            {/* 內容 */}
-            <label
-              style={{
-                display: 'block',
-                marginBottom: '5px',
-                fontSize: '12px',
-              }}
-            >
-              內容
+              {/* 【修正】將 div 改為 label */}
+              <label className="form-group" htmlFor="line-number">
+                <span className="form-label">行號</span>
+                <input
+                  id="line-number"
+                  type="number"
+                  min="1"
+                  value={lineNumber}
+                  onChange={(e) => setLineNumber(Number(e.target.value))}
+                  className="form-input"
+                />
+              </label>
+            </div>
+
+            {/* 內容輸入 */}
+            {/* 【修正】將 div 改為 label */}
+            <label className="form-group" htmlFor="comment-content">
+              <span className="form-label">內容描述</span>
               <textarea
+                id="comment-content"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                rows={3}
-                style={{
-                  width: '100%',
-                  padding: '5px',
-                  borderRadius: '4px',
-                  backgroundColor: '#444',
-                  color: 'white',
-                  border: 'none',
-                  resize: 'none',
-                  marginTop: '5px',
-                }}
+                placeholder="請輸入註解內容..."
+                rows={4}
+                className="form-textarea"
               />
             </label>
 
             {/* 按鈕區 */}
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'flex-end',
-                gap: '10px',
-                marginTop: '10px',
-              }}
-            >
-              <button
-                type="button"
-                onClick={onClose}
-                style={{
-                  padding: '6px 12px',
-                  borderRadius: '4px',
-                  border: '1px solid #666',
-                  background: 'transparent',
-                  color: '#ccc',
-                  cursor: 'pointer',
-                }}
-              >
+            <div className="modal-footer">
+              <button type="button" onClick={onClose} className="btn-cancel">
                 取消
               </button>
-              <button
-                type="submit"
-                style={{
-                  padding: '6px 12px',
-                  borderRadius: '4px',
-                  border: 'none',
-                  background: '#61dafb',
-                  color: '#000',
-                  cursor: 'pointer',
-                  fontWeight: 'bold',
-                }}
-              >
-                儲存
+              <button type="submit" className="btn-save">
+                儲存註解
               </button>
             </div>
           </form>

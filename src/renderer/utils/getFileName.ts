@@ -9,7 +9,6 @@ export const getFileName = (
 
   let fileName: string | null = null;
 
-  console.log('outer:', breadCrumbs);
   // 處理所有麵包屑元素
   for (let i = 0; i < breadCrumbs.length; i += 1) {
     const breadCrumb = breadCrumbs[i];
@@ -28,7 +27,7 @@ export const getFileName = (
       // 是最後一項
       segment = breadCrumb.children[1].name;
     }
-    
+
     // 如果segment有效且不為空
     if (segment && segment !== '') {
       // 檢查是否為檔案名稱 (包含 '.')
@@ -46,7 +45,7 @@ export const getFileName = (
       }
     }
   }
-  console.log('after:', fileName);
+  console.log('name:', fileName);
   return { fileName };
 };
 

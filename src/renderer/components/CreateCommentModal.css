@@ -1,0 +1,130 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  pointer-events: auto;
+}
+
+.modal-content {
+  background-color: #252526;
+  padding: 24px;
+  border-radius: 12px;
+  width: 380px;
+  color: #cccccc;
+  border: 1px solid #454545;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.modal-header {
+  margin: 0 0 20px 0;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+  border-bottom: 1px solid #3e3e42;
+  padding-bottom: 12px;
+}
+
+.form-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+/* 用於讓特定欄位佔據更多空間 (例如檔案名稱) */
+.form-group.flex-2 {
+  flex: 2;
+}
+
+.form-label {
+  font-size: 12px;
+  color: #9cdcfe;
+  font-weight: 500;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 4px;
+  background-color: #3c3c3c;
+  color: #ffffff;
+  border: 1px solid #3c3c3c;
+  outline: none;
+  font-size: 13px;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+/* 替換原本 JS 的 onFocus */
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  border-color: #007acc;
+}
+
+.form-textarea {
+  color: #d4d4d4;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #3e3e42;
+}
+
+.btn-cancel {
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: 1px solid #5a5a5a;
+  background: transparent;
+  color: #cccccc;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.2s;
+}
+
+/* 替換原本 JS 的 onMouseEnter */
+.btn-cancel:hover {
+  background-color: #3c3c3c;
+}
+
+.btn-save {
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: none;
+  background: #0e639c;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  transition: background 0.2s;
+}
+
+/* 替換原本 JS 的 onMouseEnter */
+.btn-save:hover {
+  background-color: #1177bb;
+}

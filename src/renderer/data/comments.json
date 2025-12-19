@@ -8,7 +8,7 @@
   },
   {
     "id": "c2",
-    "content": "這裡可能會有記憶體洩漏，請檢查",
+    "content": "這裡可能會有記憶體洩漏，請檢查程式碼是否正確",
     "fileName": "HelloWorld.tsx",
     "line_number": 15,
     "type": "Bug"
@@ -33,5 +33,12 @@
     "fileName": "LineBox.tsx",
     "line_number": 15,
     "type": "Todo"
+  },
+  {
+    "id": "c1765983232050",
+    "content": "maybejldhsfukhaewukfhihuifhnkjsdhnfkjdhfkjahewnfkjehwafuklhewkujfhuiefhuihwefuhnkjsakfh",
+    "fileName": "HomContext.tsx",
+    "line_number": 155,
+    "type": "Bug"
   }
 ]

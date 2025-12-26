@@ -8,12 +8,31 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   comments: CommentData[];
+  onEdit: (comment: CommentData) => void;
+  onJump: (comment: CommentData) => void;
 }
+
+const EditIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: '12px', height: '12px' }}
+  >
+    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+  </svg>
+);
 
 export const QueryCommentModal: React.FC<Props> = ({
   isOpen,
   onClose,
   comments,
+  onEdit,
+  onJump,
 }) => {
   const [filterType, setFilterType] = useState<string>('All');
   const [sortOrder, setSortOrder] = useState<string>('Default');
@@ -75,10 +94,8 @@ export const QueryCommentModal: React.FC<Props> = ({
     <InteractiveElement>
       <div className="query-modal-overlay">
         <div className="query-modal-content">
-          {/* Header */}
           <div className="query-header">
             <span>註解查詢儀表板 ({displayComments.length})</span>
-            {/* 【修正】加入 type="button" */}
             <button
               type="button"
               onClick={onClose}
@@ -89,7 +106,6 @@ export const QueryCommentModal: React.FC<Props> = ({
             </button>
           </div>
 
-          {/* Controls: Filter & Sort */}
           <div className="query-controls">
             <div className="control-group">
               <span className="control-label">篩選類型:</span>
@@ -119,7 +135,6 @@ export const QueryCommentModal: React.FC<Props> = ({
             </div>
           </div>
 
-          {/* Comment List */}
           <div className="comment-list">
             {displayComments.length === 0 ? (
               <div
@@ -133,16 +148,45 @@ export const QueryCommentModal: React.FC<Props> = ({
               </div>
             ) : (
               displayComments.map((item) => (
-                <div key={item.id} className="comment-item">
+                <div
+                  key={item.id}
+                  className="comment-item"
+                  // 【修正】加入 role 與 tabIndex 支援鍵盤聚焦
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => onJump(item)}
+                  // 【修正】加入鍵盤事件支援
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      onJump(item);
+                    }
+                  }}
+                  title="點擊以跳轉至程式碼"
+                >
                   <div className="comment-item-header">
                     <span className="comment-file-info">
                       {item.fileName || 'Unknown File'} : {item.line_number}
                     </span>
-                    <span
-                      className={`comment-type-badge ${getBadgeClass(item.type)}`}
-                    >
-                      {getIcon(item.type)} {item.type}
-                    </span>
+
+                    <div className="comment-right-group">
+                      <span
+                        className={`comment-type-badge ${getBadgeClass(item.type)}`}
+                      >
+                        {getIcon(item.type)} {item.type}
+                      </span>
+                      <button
+                        type="button"
+                        className="comment-edit-btn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onEdit(item);
+                        }}
+                        title="編輯註解"
+                      >
+                        <EditIcon />
+                      </button>
+                    </div>
                   </div>
                   <div className="comment-content">{item.content}</div>
                 </div>

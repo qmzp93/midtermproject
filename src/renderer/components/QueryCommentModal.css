@@ -100,11 +100,18 @@
   border-radius: 6px;
   padding: 10px;
   border: 1px solid #3e3e42;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, transform 0.1s;
+  cursor: pointer; /* 【新增】 */
 }
 
 .comment-item:hover {
   background-color: #3e3e42;
+  /* 稍微移動一下增加互動感 */
+  transform: translateX(4px); 
+}
+
+.comment-item:active {
+  background-color: #2d2d2d;
 }
 
 .comment-item-header {
@@ -150,4 +157,33 @@
 
 .modal-close-btn:hover {
   color: white;
+}
+
+.comment-right-group {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* 標籤與編輯按鈕的間距 */
+}
+
+.comment-edit-btn {
+  background: transparent;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.comment-edit-btn:hover {
+  background-color: #3e3e42;
+  color: #4ec9b0; /* Hover 時變亮 */
+}
+
+.comment-edit-btn svg {
+  width: 14px;
+  height: 14px;
 }

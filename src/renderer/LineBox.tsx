@@ -10,6 +10,7 @@ import type { CommentData } from './components/CreateCommentModal';
 // 1. 定義 LineBox 的 Props
 interface LineBoxProps {
   comments: CommentData[]; // 新增這個屬性
+  onEdit: (data: CommentData) => void;
 }
 
 export type BoundingInfo = {
@@ -28,18 +29,18 @@ const getMergedBoundingInfo = (
   }
   const { x, height } = xElement;
 
-  const width = 50;
+  const width = 45;
   const y = yElement.y + yElement.height;
 
   return {
-    x: x + 15,
+    x: x + 11,
     y,
     width,
-    height: height - 80,
+    height: height - 70,
   };
 };
 
-export const LineBox: React.FC<LineBoxProps> = ({ comments }) => {
+export const LineBox: React.FC<LineBoxProps> = ({ comments, onEdit }) => {
   const { editorAreaBoundingBox, breadCrumbBoundingBox } =
     useContext(HomContext);
 
@@ -60,12 +61,12 @@ export const LineBox: React.FC<LineBoxProps> = ({ comments }) => {
     <>
       {mergedBoundingInfo && <PrintBox boundingInfo={mergedBoundingInfo} />}
 
-      {/* 3. 【新增】將座標傳給 LineNumberDetector 進行辨識與繪製 */}
       {mergedBoundingInfo && (
         <CommentOverlay
           detectedLines={detectedLines}
           targetBoundingBox={mergedBoundingInfo}
-          externalComments={comments} // 傳入從上層來的資料
+          externalComments={comments}
+          onEdit={onEdit}
         />
       )}
     </>

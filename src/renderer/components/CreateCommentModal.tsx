@@ -17,30 +17,40 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   onSave: (data: CommentData) => void;
+  initialData: CommentData | null; // 【新增】接收編輯用的初始資料
 }
 
 export const CreateCommentModal: React.FC<Props> = ({
   isOpen,
   onClose,
   onSave,
+  initialData,
 }) => {
   const { currentFileName } = useContext(HomContext);
 
-  // 表單狀態
   const [content, setContent] = useState('');
   const [lineNumber, setLineNumber] = useState(1);
   const [type, setType] = useState<'Info' | 'Bug' | 'Todo'>('Info');
-
-  // 【新增】檔案名稱的 State
   const [fileName, setFileName] = useState('');
 
-  // 當 Modal 開啟時，自動帶入當前的檔案名稱
+  // 【修改】Effect：根據是「新增」還是「編輯」來初始化狀態
   useEffect(() => {
     if (isOpen) {
-      setFileName(currentFileName || '');
-      // 如果需要，也可以在這裡重置其他欄位
+      if (initialData) {
+        // --- 編輯模式 ---
+        setContent(initialData.content);
+        setLineNumber(initialData.line_number);
+        setType(initialData.type);
+        setFileName(initialData.fileName || '');
+      } else {
+        // --- 新增模式 ---
+        setContent('');
+        setLineNumber(1);
+        setType('Info');
+        setFileName(currentFileName || '');
+      }
     }
-  }, [isOpen, currentFileName]);
+  }, [isOpen, initialData, currentFileName]);
 
   if (!isOpen) return null;
 
@@ -49,7 +59,7 @@ export const CreateCommentModal: React.FC<Props> = ({
 
     // 建立新註解物件
     const newComment: CommentData = {
-      id: `c${Date.now()}`, // 使用時間戳當作唯一 ID
+      id: initialData ? initialData.id : `c${Date.now()}`,
       content,
       fileName,
       line_number: Number(lineNumber),
@@ -61,21 +71,21 @@ export const CreateCommentModal: React.FC<Props> = ({
     // 重置表單並關閉
     setContent('');
     onClose();
-    window.api.button.OutButton();
   };
 
   return (
     <InteractiveElement>
       <div className="modal-overlay">
         <div className="modal-content">
-          <h3 className="modal-header">新增 AR 註解</h3>
+          <h3 className="modal-header">
+            {initialData ? '編輯註解' : '新增 AR 註解'}
+          </h3>
 
           <form onSubmit={handleSubmit}>
             {/* 類型選擇 */}
             <div style={{ marginBottom: '16px' }}>
-              {/* 【修正】將 div 改為 label，讓它包覆整個輸入區域 */}
+              {/* 類型選擇 */}
               <label className="form-group" htmlFor="comment-type">
-                {/* 【修正】內層原本的 label 改為 span，避免 label 包 label */}
                 <span className="form-label">註解類型</span>
                 <select
                   id="comment-type"
@@ -92,7 +102,6 @@ export const CreateCommentModal: React.FC<Props> = ({
 
             {/* 檔案名稱 + 行號 */}
             <div className="form-row">
-              {/* 【修正】將 div 改為 label */}
               <label className="form-group flex-2" htmlFor="file-name">
                 <span className="form-label">檔案名稱</span>
                 <input
@@ -105,7 +114,6 @@ export const CreateCommentModal: React.FC<Props> = ({
                 />
               </label>
 
-              {/* 【修正】將 div 改為 label */}
               <label className="form-group" htmlFor="line-number">
                 <span className="form-label">行號</span>
                 <input
@@ -120,7 +128,6 @@ export const CreateCommentModal: React.FC<Props> = ({
             </div>
 
             {/* 內容輸入 */}
-            {/* 【修正】將 div 改為 label */}
             <label className="form-group" htmlFor="comment-content">
               <span className="form-label">內容描述</span>
               <textarea

@@ -1,9 +1,9 @@
 [
   {
     "id": "c1",
-    "content": "輸出紅色框框邏輯",
+    "content": "輸出紅色框框邏test",
     "fileName": "HelloWorld.tsx",
-    "line_number": 12,
+    "line_number": 9,
     "type": "Info"
   },
   {
@@ -31,14 +31,21 @@
     "id": "c5",
     "content": "請確認座標是否正確",
     "fileName": "LineBox.tsx",
-    "line_number": 15,
+    "line_number": 20,
     "type": "Todo"
   },
   {
     "id": "c1765983232050",
-    "content": "maybejldhsfukhaewukfhihuifhnkjsdhnfkjdhfkjahewnfkjehwafuklhewkujfhuiefhuihwefuhnkjsakfh",
+    "content": "maybejldhsfukhaewukfhihuifhnkjsdhnfkjdhfkjahewnfkjehwafuklhewkujfhuiefhuihwefuhnkjsakfh123456789887654321",
     "fileName": "HomContext.tsx",
     "line_number": 155,
+    "type": "Bug"
+  },
+  {
+    "id": "c1766581984389",
+    "content": "test",
+    "fileName": "HelloWorld.tsx",
+    "line_number": 21,
     "type": "Bug"
   }
 ]

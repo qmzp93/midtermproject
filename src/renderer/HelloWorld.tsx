@@ -20,12 +20,11 @@ export const HelloWorld = () => {
   const { venomInstance, setSubscribedHost, subscribedHostInstance } =
     useContext(HomContext);
 
-  // 管理 Create Modal 開關
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  // 【新增】管理 Query Modal 開關
+  // 管理 Query Modal 開關
   const [isQueryModalOpen, setIsQueryModalOpen] = useState(false);
 
-  // 【新增】記錄當前正在編輯的註解 (如果是 null 代表是新增模式)
+  // 記錄當前正在編輯的註解 (如果是 null 代表是新增模式)
   const [editingComment, setEditingComment] = useState<CommentData | null>(
     null,
   );
@@ -76,7 +75,22 @@ export const HelloWorld = () => {
     setEditingComment(null);
   };
 
-  // 【新增】處理點擊編輯按鈕的行為
+  const handleDeleteComment = async (id: string) => {
+    const updatedComments = comments.filter((c) => c.id !== id);
+    setComments(updatedComments);
+
+    if (window.api && window.api.saveComments) {
+      window.api.saveComments(updatedComments);
+    }
+
+    // 如果剛好正在編輯這則註解，清空編輯狀態
+    if (editingComment && editingComment.id === id) {
+      setEditingComment(null);
+    }
+
+    window.api.button.OutButton();
+  };
+
   const handleEditClick = (comment: CommentData) => {
     setEditingComment(comment); // 設定要編輯的資料
     setIsQueryModalOpen(false); // 關閉查詢視窗
@@ -96,22 +110,22 @@ export const HelloWorld = () => {
 
       // --- 步驟 1: 開啟檔案 (Ctrl + P) ---
       await venomInstance.key(KeyCode.Ctrl, KeyCode.P);
-      await sleep(300); // 等待搜尋框出現
+      await sleep(350); // 等待搜尋框出現
 
       // 只輸入檔名
       await venomInstance.keyInput(comment.fileName);
-      await sleep(300);
+      await sleep(350);
 
       await venomInstance.key(KeyCode.Enter); // 確認開啟檔案
 
-      await sleep(500);
+      await sleep(550);
 
       // --- 步驟 2: 跳轉行數 (Ctrl + G) ---
       await venomInstance.key(KeyCode.Ctrl, KeyCode.G);
-      await sleep(300); // 等待行號輸入框出現
+      await sleep(350); // 等待行號輸入框出現
 
       await venomInstance.keyInput(comment.line_number.toString());
-      await sleep(300);
+      await sleep(350);
 
       await venomInstance.key(KeyCode.Enter); // 確認跳轉
     } catch (error) {
@@ -122,7 +136,11 @@ export const HelloWorld = () => {
 
   return (
     <>
-      <LineBox comments={comments} onEdit={handleEditClick} />
+      <LineBox
+        comments={comments}
+        onEdit={handleEditClick}
+        onDelete={handleDeleteComment}
+      />
 
       {/* 7. 放入 Modal 元件 */}
       <CreateCommentModal
@@ -130,7 +148,7 @@ export const HelloWorld = () => {
         onClose={() => {
           setIsCreateModalOpen(false);
           setEditingComment(null); // 關閉時記得清空編輯狀態，不然下次打開會殘留
-          // window.api.button.OutButton();
+          window.api.button.OutButton();
         }}
         onSave={handleSaveComment}
         initialData={editingComment} // 【新增】傳入初始資料
@@ -145,6 +163,7 @@ export const HelloWorld = () => {
         comments={comments}
         onEdit={handleEditClick}
         onJump={handleJumpClick}
+        onDelete={handleDeleteComment}
       />
 
       <ToolBar>

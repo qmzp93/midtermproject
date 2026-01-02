@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { BoundingBox } from '@ar-project/host-object-model';
 import { HomContext } from './context/HomContext';
-import { PrintBox } from './components/PrintBox';
+// import { PrintBox } from './components/PrintBox';  // degbug 用
 
 import { useLineNumberDetector } from './hooks/useLineNumberDetector';
 import { CommentOverlay } from './components/CommentOverlay';
@@ -11,6 +11,7 @@ import type { CommentData } from './components/CreateCommentModal';
 interface LineBoxProps {
   comments: CommentData[]; // 新增這個屬性
   onEdit: (data: CommentData) => void;
+  onDelete: (id: string) => void;
 }
 
 export type BoundingInfo = {
@@ -33,14 +34,18 @@ const getMergedBoundingInfo = (
   const y = yElement.y + yElement.height;
 
   return {
-    x: x + 11,
+    x: x + 7,
     y,
     width,
-    height: height - 70,
+    height: height - 60,
   };
 };
 
-export const LineBox: React.FC<LineBoxProps> = ({ comments, onEdit }) => {
+export const LineBox: React.FC<LineBoxProps> = ({
+  comments,
+  onEdit,
+  onDelete,
+}) => {
   const { editorAreaBoundingBox, breadCrumbBoundingBox } =
     useContext(HomContext);
 
@@ -59,7 +64,8 @@ export const LineBox: React.FC<LineBoxProps> = ({ comments, onEdit }) => {
 
   return (
     <>
-      {mergedBoundingInfo && <PrintBox boundingInfo={mergedBoundingInfo} />}
+      {/* mergedBoundingInfo && <PrintBox boundingInfo={mergedBoundingInfo} /> */
+      /* debug 用 */}
 
       {mergedBoundingInfo && (
         <CommentOverlay
@@ -67,6 +73,7 @@ export const LineBox: React.FC<LineBoxProps> = ({ comments, onEdit }) => {
           targetBoundingBox={mergedBoundingInfo}
           externalComments={comments}
           onEdit={onEdit}
+          onDelete={onDelete}
         />
       )}
     </>

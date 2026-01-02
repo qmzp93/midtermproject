@@ -33,7 +33,6 @@ export const CreateCommentModal: React.FC<Props> = ({
   const [type, setType] = useState<'Info' | 'Bug' | 'Todo'>('Info');
   const [fileName, setFileName] = useState('');
 
-  // 【修改】Effect：根據是「新增」還是「編輯」來初始化狀態
   useEffect(() => {
     if (isOpen) {
       if (initialData) {
@@ -73,18 +72,20 @@ export const CreateCommentModal: React.FC<Props> = ({
     onClose();
   };
 
+  const modeClass = `${type.toLowerCase()}-mode`;
+
   return (
     <InteractiveElement>
       <div className="modal-overlay">
-        <div className="modal-content">
+        {/* 加入動態 class 以切換顏色主題 */}
+        <div className={`modal-content ${modeClass}`}>
           <h3 className="modal-header">
             {initialData ? '編輯註解' : '新增 AR 註解'}
           </h3>
 
           <form onSubmit={handleSubmit}>
             {/* 類型選擇 */}
-            <div style={{ marginBottom: '16px' }}>
-              {/* 類型選擇 */}
+            <div style={{ marginBottom: '20px' }}>
               <label className="form-group" htmlFor="comment-type">
                 <span className="form-label">註解類型</span>
                 <select
@@ -146,7 +147,7 @@ export const CreateCommentModal: React.FC<Props> = ({
                 取消
               </button>
               <button type="submit" className="btn-save">
-                儲存註解
+                儲存
               </button>
             </div>
           </form>

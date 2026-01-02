@@ -1,5 +1,5 @@
 # Electron-React-Venom Template
-使用 React 作為前端畫面框架的 Electron-Venom Template  
+使用 React 作為前端畫面框架的 Electron-Venom
 主要以 [electron-react-boilerplate](https://github.com/electron-react-boilerplate/electron-react-boilerplate/tree/main?tab=readme-ov-file) 為基底進行調整。
 
 ## Dependencies
@@ -33,6 +33,8 @@ npm ci
 ```shell
 npm start
 ```
+
+- 在 VSCode 打開後的第一次執行會報錯，關閉Venom重開即可(VSCode不需關閉)。
 
 4. 接著你應該會看到如下畫面  
 代表你成功了，這個畫面除了 Read our docs 這個按鈕外，滑鼠都是碰不到的  

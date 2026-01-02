@@ -5,15 +5,16 @@ import type { LineNumberResult } from '../hooks/useLineNumberDetector';
 import type { BoundingInfo } from '../LineBox';
 import type { CommentData } from './CreateCommentModal';
 import InteractiveElement from './InteractiveElement';
+import './CommentOverlay.css';
 
 interface Props {
   detectedLines: LineNumberResult[];
   targetBoundingBox: BoundingInfo;
   externalComments: CommentData[];
   onEdit: (comment: CommentData) => void;
+  onDelete: (id: string) => void;
 }
 
-// 圖示對照 Helper
 const getIcon = (type: string) => {
   switch (type) {
     case 'Info':
@@ -35,10 +36,25 @@ const EditIcon = () => (
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
-    style={{ width: '12px', height: '12px' }}
   >
     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+  </svg>
+);
+
+const DeleteIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <polyline points="3 6 5 6 21 6" />
+    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+    <line x1="10" y1="11" x2="10" y2="17" />
+    <line x1="14" y1="11" x2="14" y2="17" />
   </svg>
 );
 
@@ -47,6 +63,7 @@ export const CommentOverlay: React.FC<Props> = ({
   targetBoundingBox,
   externalComments,
   onEdit,
+  onDelete,
 }) => {
   const [hoveredCommentId, setHoveredCommentId] = useState<string | null>(null);
   const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
@@ -75,7 +92,7 @@ export const CommentOverlay: React.FC<Props> = ({
         if (!matchedLine) return null;
 
         const absX =
-          targetBoundingBox.x + matchedLine.x + matchedLine.width + 20;
+          targetBoundingBox.x + matchedLine.x + matchedLine.width + 7;
         const absY = targetBoundingBox.y + matchedLine.y;
 
         const isHovered = hoveredCommentId === comment.id;
@@ -83,23 +100,21 @@ export const CommentOverlay: React.FC<Props> = ({
         const showDetails = isHovered || isSelected;
 
         return (
-          <InteractiveElement>
-            <div
-              key={comment.id}
-              onMouseEnter={() => setHoveredCommentId(comment.id)}
-              onMouseLeave={() => setHoveredCommentId(null)}
-              style={{
-                position: 'absolute',
-                left: absX,
-                top: absY,
-                zIndex: 3000,
-                pointerEvents: 'auto',
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
+          <div
+            key={comment.id}
+            className="comment-overlay-container"
+            onMouseEnter={() => setHoveredCommentId(comment.id)}
+            onMouseLeave={() => setHoveredCommentId(null)}
+            style={{
+              left: absX,
+              top: absY,
+            }}
+          >
+            {/* 主圖示按鈕 */}
+            <InteractiveElement>
               <button
                 type="button"
+                className={`comment-toggle-btn ${showDetails ? 'active' : ''}`}
                 onClick={(e) => {
                   e.stopPropagation();
                   if (isSelected) {
@@ -108,134 +123,63 @@ export const CommentOverlay: React.FC<Props> = ({
                     setSelectedCommentId(comment.id);
                   }
                 }}
-                style={{
-                  fontSize: '19px',
-                  filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.3))',
-                  transition: 'transform 0.1s',
-                  transform: showDetails ? 'scale(1.2)' : 'scale(1)',
-                  cursor: 'pointer',
-                  // 重置按鈕樣式
-                  background: 'transparent',
-                  border: 'none',
-                  padding: 0,
-                  lineHeight: 1, // 避免按鈕高度撐開
-                }}
               >
                 {getIcon(comment.type)}
               </button>
 
+              {/* 詳細資訊彈窗 */}
               {showDetails && (
+                // 【修改】加入動態 class 根據 type 套用對應的漸層主題
                 <div
-                  style={{
-                    position: 'absolute',
-                    left: '30px',
-                    top: '-10px',
-                    backgroundColor: 'rgba(40, 44, 52, 0.95)',
-                    color: 'white',
-                    border: '1px solid #555',
-                    borderRadius: '6px',
-                    padding: '8px 12px',
-                    minWidth: '200px',
-                    maxWidth: '300px',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-                    fontSize: '13px',
-                    lineHeight: '1.5',
-                    whiteSpace: 'normal',
-                    backdropFilter: 'blur(4px)',
-                    zIndex: 3001,
-                    cursor: 'text',
-                  }}
+                  className={`comment-tooltip ${comment.type.toLowerCase()}-theme`}
                 >
-                  <div
-                    style={{
-                      position: 'absolute',
-                      left: '-6px',
-                      top: '16px',
-                      width: '0',
-                      height: '0',
-                      borderTop: '6px solid transparent',
-                      borderBottom: '6px solid transparent',
-                      borderRight: '6px solid rgba(40, 44, 52, 0.95)',
-                    }}
-                  />
+                  <div className="tooltip-arrow" />
+                  {isSelected && (
+                    <span className="pin-icon" title="已釘選">
+                      📌
+                    </span>
+                  )}
+                  <div className="tooltip-header">
+                    <div className="header-left">
+                      <span className="type-badge">{comment.type}</span>
+                    </div>
 
-                  <div
-                    style={{
-                      borderBottom: '1px solid #666',
-                      paddingBottom: '6px',
-                      marginBottom: '6px',
-                      fontWeight: 'bold',
-                      color: '#61dafb',
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <span>Line {comment.line_number}</span>
-                    {/* 右側工具區：釘選圖示 + 類型標籤 + 編輯按鈕 */}
-                    <div
-                      style={{
-                        display: 'flex',
-                        gap: '8px',
-                        alignItems: 'center',
-                      }}
-                    >
-                      {isSelected && (
-                        <span style={{ fontSize: '10px' }} title="已釘選">
-                          📌
-                        </span>
-                      )}
-
-                      <span
-                        style={{
-                          fontSize: '10px',
-                          backgroundColor: '#333',
-                          padding: '2px 6px',
-                          borderRadius: '4px',
-                          color: '#ddd',
-                        }}
-                      >
-                        {comment.type.toUpperCase()}
+                    <div className="header-right">
+                      <span className="line-number">
+                        Line {comment.line_number}
                       </span>
 
-                      {/* 【新增】編輯按鈕 */}
                       <button
                         type="button"
+                        className="action-btn edit"
                         onClick={(e) => {
-                          e.stopPropagation(); // 避免觸發外層的切換顯示
+                          e.stopPropagation();
                           onEdit(comment);
                         }}
                         title="編輯註解"
-                        style={{
-                          background: 'transparent',
-                          border: '1px solid #666',
-                          borderRadius: '4px',
-                          color: '#ccc',
-                          cursor: 'pointer',
-                          padding: '2px 4px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          transition: 'background 0.2s',
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor = '#555';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor = 'transparent';
-                        }}
                       >
                         <EditIcon />
+                      </button>
+
+                      <button
+                        type="button"
+                        className="action-btn delete"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDelete(comment.id);
+                        }}
+                        title="刪除註解"
+                      >
+                        <DeleteIcon />
                       </button>
                     </div>
                   </div>
 
-                  {/* 內容區 */}
-                  <div>{comment.content}</div>
+                  <div className="tooltip-content">{comment.content}</div>
                 </div>
               )}
-            </div>
-          </InteractiveElement>
+            </InteractiveElement>
+          </div>
         );
       })}
     </>

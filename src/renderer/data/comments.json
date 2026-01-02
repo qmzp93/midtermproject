@@ -1,12 +1,5 @@
 [
   {
-    "id": "c1",
-    "content": "輸出紅色框框邏test",
-    "fileName": "HelloWorld.tsx",
-    "line_number": 9,
-    "type": "Info"
-  },
-  {
     "id": "c2",
     "content": "這裡可能會有記憶體洩漏，請檢查程式碼是否正確",
     "fileName": "HelloWorld.tsx",
@@ -36,16 +29,16 @@
   },
   {
     "id": "c1765983232050",
-    "content": "maybejldhsfukhaewukfhihuifhnkjsdhnfkjdhfkjahewnfkjehwafuklhewkujfhuiefhuihwefuhnkjsakfh123456789887654321",
+    "content": "maybejldhsfukhaewukfhihuifhnkjsdhnfkjdhfkjahewnfkjehwafuklhewkujfhuiefhuihwefuhnkjsagjhhdretrhjhkbjngfchvh",
     "fileName": "HomContext.tsx",
     "line_number": 155,
     "type": "Bug"
   },
   {
-    "id": "c1766581984389",
-    "content": "test",
+    "id": "c1767075139265",
+    "content": "管理 Create Modal 開關",
     "fileName": "HelloWorld.tsx",
-    "line_number": 21,
-    "type": "Bug"
+    "line_number": 23,
+    "type": "Info"
   }
 ]

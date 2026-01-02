@@ -10,6 +10,7 @@ interface Props {
   comments: CommentData[];
   onEdit: (comment: CommentData) => void;
   onJump: (comment: CommentData) => void;
+  onDelete: (id: string) => void;
 }
 
 const EditIcon = () => (
@@ -20,10 +21,27 @@ const EditIcon = () => (
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
-    style={{ width: '12px', height: '12px' }}
+    style={{ width: '14px', height: '14px' }}
   >
     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+  </svg>
+);
+
+const DeleteIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: '14px', height: '14px' }}
+  >
+    <polyline points="3 6 5 6 21 6" />
+    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+    <line x1="10" y1="11" x2="10" y2="17" />
+    <line x1="14" y1="11" x2="14" y2="17" />
   </svg>
 );
 
@@ -33,6 +51,7 @@ export const QueryCommentModal: React.FC<Props> = ({
   comments,
   onEdit,
   onJump,
+  onDelete,
 }) => {
   const [filterType, setFilterType] = useState<string>('All');
   const [sortOrder, setSortOrder] = useState<string>('Default');
@@ -76,17 +95,6 @@ export const QueryCommentModal: React.FC<Props> = ({
         return 'badge-todo';
       default:
         return 'badge-info';
-    }
-  };
-
-  const getIcon = (type: string) => {
-    switch (type) {
-      case 'Bug':
-        return '🐞';
-      case 'Todo':
-        return '✅';
-      default:
-        return 'ℹ️';
     }
   };
 
@@ -140,8 +148,9 @@ export const QueryCommentModal: React.FC<Props> = ({
               <div
                 style={{
                   textAlign: 'center',
-                  color: '#666',
-                  marginTop: '20px',
+                  color: '#888',
+                  marginTop: '40px',
+                  fontSize: '14px',
                 }}
               >
                 沒有符合條件的註解
@@ -150,12 +159,11 @@ export const QueryCommentModal: React.FC<Props> = ({
               displayComments.map((item) => (
                 <div
                   key={item.id}
-                  className="comment-item"
-                  // 【修正】加入 role 與 tabIndex 支援鍵盤聚焦
+                  // 【新增】動態 class，根據 type 給予不同的左邊框顏色
+                  className={`comment-item type-${item.type.toLowerCase()}`}
                   role="button"
                   tabIndex={0}
                   onClick={() => onJump(item)}
-                  // 【修正】加入鍵盤事件支援
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault();
@@ -173,11 +181,13 @@ export const QueryCommentModal: React.FC<Props> = ({
                       <span
                         className={`comment-type-badge ${getBadgeClass(item.type)}`}
                       >
-                        {getIcon(item.type)} {item.type}
+                        {item.type}
                       </span>
+
+                      {/* 編輯按鈕 */}
                       <button
                         type="button"
-                        className="comment-edit-btn"
+                        className="comment-action-btn edit"
                         onClick={(e) => {
                           e.stopPropagation();
                           onEdit(item);
@@ -185,6 +195,19 @@ export const QueryCommentModal: React.FC<Props> = ({
                         title="編輯註解"
                       >
                         <EditIcon />
+                      </button>
+
+                      {/* 刪除按鈕 */}
+                      <button
+                        type="button"
+                        className="comment-action-btn delete"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDelete(item.id);
+                        }}
+                        title="刪除註解"
+                      >
+                        <DeleteIcon />
                       </button>
                     </div>
                   </div>

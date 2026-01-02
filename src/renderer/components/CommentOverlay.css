@@ -1,0 +1,200 @@
+/* src/renderer/components/CommentOverlay.css */
+
+/* 1. 最外層容器 */
+.comment-overlay-container {
+  position: absolute;
+  z-index: 3000;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+}
+
+/* 2. 主圖示按鈕 (懸浮球) */
+.comment-toggle-btn {
+  font-size: 19px;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.4));
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+  line-height: 1;
+  outline: none;
+}
+
+.comment-toggle-btn:hover {
+  transform: scale(1.15);
+}
+
+.comment-toggle-btn.active {
+  transform: scale(1.2);
+}
+
+/* 3. 詳細資訊彈窗 (Tooltip) - 核心樣式 */
+.comment-tooltip {
+  position: absolute; /* 確保子元素的絕對定位是相對於此容器 */
+  left: 36px;
+  top: -12px;
+
+  /* 預設背景 */
+  background: rgba(30, 30, 30, 0.9);
+
+  /* 圓潤膠囊造型 */
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  color: #ffffff;
+  padding: 0;
+  min-width: 260px;
+  max-width: 340px;
+
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: normal;
+  z-index: 3001;
+  cursor: text;
+
+  /* 【修改】改為 visible，讓釘選圖示可以突出邊框 */
+  overflow: visible;
+
+  animation: tooltip-pop-in 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  transform-origin: left center;
+}
+
+/* --- 主題配色定義 --- */
+.comment-tooltip.info-theme {
+  background: linear-gradient(135deg, rgba(30, 58, 138, 0.9), rgba(88, 28, 135, 0.9));
+  border-color: rgba(147, 197, 253, 0.3);
+  --arrow-color: rgba(30, 58, 138, 0.9);
+}
+
+.comment-tooltip.todo-theme {
+  background: linear-gradient(135deg, rgba(6, 95, 70, 0.9), rgba(13, 148, 136, 0.9));
+  border-color: rgba(110, 231, 183, 0.3);
+  --arrow-color: rgba(6, 95, 70, 0.9);
+}
+
+.comment-tooltip.bug-theme {
+  background: linear-gradient(135deg, rgba(153, 27, 27, 0.9), rgba(185, 28, 28, 0.9));
+  border-color: rgba(252, 165, 165, 0.3);
+  --arrow-color: rgba(153, 27, 27, 0.9);
+}
+
+/* 4. 箭頭 */
+.tooltip-arrow {
+  position: absolute;
+  left: -8px;
+  top: 20px;
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-right: 8px solid var(--arrow-color, #333);
+}
+
+/* 5. Header 區域 */
+.tooltip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  /* 確保 Header 的圓角與外層一致 */
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 6. 行號樣式 */
+.line-number {
+  font-family: 'Consolas', 'Monaco', monospace;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+}
+
+/* 7. 類型標籤 */
+.type-badge {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 6px;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 8. 【修改】釘選圖示 - 改為絕對定位於右上角 */
+.pin-icon {
+  position: absolute;
+  top: -10px;  /* 向上突出 */
+  right: -10px; /* 向右突出 */
+  font-size: 18px; /* 稍微放大 */
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); /* 增加立體陰影 */
+  z-index: 3002; /* 確保在最上層 */
+  transform: rotate(15deg); /* 稍微傾斜，看起來更像釘上去的 */
+  cursor: default;
+}
+
+/* 9. 操作按鈕 */
+.action-btn {
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.action-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.action-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.action-btn.delete:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+  color: #ff8080;
+}
+
+/* 10. 內容區域 */
+.tooltip-content {
+  padding: 12px 16px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  word-break: break-word;
+}
+
+@keyframes tooltip-pop-in {
+  0% { opacity: 0; transform: translateX(-15px) scale(0.9); }
+  100% { opacity: 1; transform: translateX(0) scale(1); }
+}

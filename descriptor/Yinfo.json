@@ -1,0 +1,12 @@
+{
+  "target": {
+    "preciseSelector": [
+      {
+        "automationId": "",
+        "name": "",
+        "className": "",
+        "controlType": 50008
+      }
+    ]
+  }
+}

@@ -1,0 +1,106 @@
+/* src/renderer/components/toolbar/ToolBar.css */
+
+/* ... (前面的樣式保持不變) ... */
+
+/* 1. 工具列容器 */
+.toolbar-container {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  z-index: 9000;
+  pointer-events: none;
+}
+
+/* 2. 滑動區域 */
+.toolbar-slider {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: auto;
+}
+
+/* 3. 按鈕列表區塊 */
+.toolbar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  background: rgba(30, 30, 30, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px 0 0 16px;
+  box-shadow: -10px 10px 30px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: opacity 0.3s ease;
+}
+
+/* 4. 開關按鈕 */
+.toolbar-toggle-btn {
+  width: 40px;
+  height: 48px;
+  border-radius: 12px 0 0 12px;
+  margin-right: -1px;
+  background: rgba(40, 40, 40, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-right: none;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: -4px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.toolbar-toggle-btn:hover {
+  background: rgba(60, 60, 60, 1);
+  color: white;
+  width: 45px;
+}
+
+.toolbar-toggle-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.toolbar-action-btn {
+  width: 100px;
+  height: 40px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e0e0e0;
+  transition: all 0.2s ease;
+}
+
+.toolbar-action-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  transform: translateX(-2px);
+}
+
+.toolbar-action-btn:nth-child(1):hover {
+  border-color: #3b82f6; /* VS Code Blue */
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+  text-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
+}
+
+.toolbar-action-btn:nth-child(2):hover {
+  border-color: #8b5cf6; /* Violet */
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+  text-shadow: 0 0 8px rgba(139, 92, 246, 0.6);
+}
+
+.toolbar-action-btn:nth-child(3):hover {
+  border-color: #ef4444; /* Red */
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+  text-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+}

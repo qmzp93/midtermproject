@@ -1,92 +1,63 @@
-# vscodecomment
+# Electron-React-Venom Template
+使用 React 作為前端畫面框架的 Electron-Venom
+主要以 [electron-react-boilerplate](https://github.com/electron-react-boilerplate/electron-react-boilerplate/tree/main?tab=readme-ov-file) 為基底進行調整。
+
+## Dependencies
+- Node.js <= v16.20.2
+- [Host Object Model (package)](http://gitlab.oolab.csie.ncu.edu.tw/ar-project/package/host-object-model) <= 2.0.0
+- [BackendServer](http://gitlab.oolab.csie.ncu.edu.tw/ar-project/data-collection-methods/backend-server) <= v2.1.0
+
+## Getting Start
+詳細可以查看[文件](https://hackmd.io/@oolabsoftwarear/r1gUBUrvJe)
 
 
+### Setup
 
-## Getting started
+1. 取得 Template
+透過 CLI 工具取得 Template  
+參考 [create-venom-app 使用方式](http://gitlab.oolab.csie.ncu.edu.tw/ar-project/template/venom-template-cli-tool)
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
+2. 安裝依賴
+```shell
+npm ci
 ```
-cd existing_repo
-git remote add origin https://gitlab.oolab.csie.ncu.edu.tw/ar-project/parasite/vscodecomment.git
-git branch -M main
-git push -uf origin main
+
+3. 執行 BackendServer
+- 到[這裡](http://gitlab.oolab.csie.ncu.edu.tw/ar-project/data-collection-methods/backend-server/-/packages)下載 BackendServer
+- 點擊 `BackendServer.exe` 執行
+
+4. 開啟 Host 應用程式
+- 如果你是直接用預設的話，請開啟一個 VSCode (只能有一個視窗)
+
+5. 執行專案
+```shell
+npm start
 ```
 
-## Integrate with your tools
+- 在 VSCode 打開後的第一次執行會報錯，關閉Venom重開即可(VSCode不需關閉)。
 
-- [ ] [Set up project integrations](https://gitlab.oolab.csie.ncu.edu.tw/ar-project/parasite/vscodecomment/-/settings/integrations)
+4. 接著你應該會看到如下畫面  
+代表你成功了，這個畫面除了 Read our docs 這個按鈕外，滑鼠都是碰不到的  
+你可以點擊 Read our docs 查看更詳細文件說明以進行開發
+![welcome page](readme_images/welcome_page.png)
 
-## Collaborate with your team
+### VSCode Extension
+在 `.vscode/extension.json` 中有列兩個 extension，可以安裝  
+裡面列的是 extension 的 Installation Identifier，可以用此去尋找對應的 extension  
+或是 VSCode 也會跳出建議安裝的 extension，直接安裝也可
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+## Package
+1. Format Style
+```shell
+# 讓 code 符合 style
+npm run lint:fix
+```
 
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+2. 進行打包
+```shell
+npm run package
+```
+你會在 `release/build/` 底下看到打包完的結果
 
 ## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+...(待補)
